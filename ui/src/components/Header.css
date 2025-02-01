@@ -1,0 +1,35 @@
+/* Header Component Styles */
+.header-container {
+    background-color: #003366; /* Dark Blue */
+    color: white;
+    padding: 2rem 1rem; /* Adjust padding as needed */
+    position: relative;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-row {
+    display: flex;
+    align-items: center;
+}
+
+.logo-image {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.header-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #38A169; /* Green */
+}
+
+.header-subtitle {
+    font-size: 1rem;
+}

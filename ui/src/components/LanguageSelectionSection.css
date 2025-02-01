@@ -1,0 +1,33 @@
+/* Language Selection Section Styles */
+.language-selection-container {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 1.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    max-width: 28rem; /* Adjust to match max-w-md */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.language-selection-title {
+    font-size: 1.25rem; /* Text size for the heading */
+    font-weight: 600; /* Semi-bold */
+    color: #3182ce; /* Blue color */
+}
+
+.language-options {
+    margin-top: 1rem;
+}
+
+.language-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Space between radio button and text */
+}
+
+.flag-icon {
+    margin-left: 0.25rem;
+}

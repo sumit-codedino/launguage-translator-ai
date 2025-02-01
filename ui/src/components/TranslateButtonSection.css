@@ -1,0 +1,20 @@
+/* Translate Button Section Styles */
+.translate-button-container {
+    margin-top: 1.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.translate-button {
+    background-color: #3182ce; /* Blue background */
+    color: white;
+    font-weight: bold;
+    padding: 1rem 2rem; /* Adjust padding */
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.translate-button:hover {
+    background-color: #2b6cb0; /* Darker blue on hover */
+}
