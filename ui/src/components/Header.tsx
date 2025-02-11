@@ -14,7 +14,7 @@ function Header() {
                     </Col>
                     {/* Title and Subtitle */}
                     <Col>
-                        <h1 className="header-title">PollyGlot</h1>
+                        <h1 className="header-title">RomanceGot</h1>
                         <p className="header-subtitle">Perfect Translation Every Time</p>
                     </Col>
                 </Row>

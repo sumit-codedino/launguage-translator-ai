@@ -30,10 +30,28 @@ function LanguageSelectionSection() {
                     />
                     <Form.Check 
                         type="radio" 
-                        id="japanese"
+                        id="portuguese"
                         name="language" 
-                        value="Japanese" 
-                        label={<><span>Japanese</span> <span className="flag-icon">🇯🇵</span></>} 
+                        value="Portuguese" 
+                        label={<><span>Portuguese</span> <span className="flag-icon">🇵🇹</span></>} 
+                        className="language-option"
+                        onChange={(e) => dispatch(setTranslationLanguage(e.target.value))} 
+                    />
+                    <Form.Check 
+                        type="radio" 
+                        id="italian"
+                        name="language" 
+                        value="Italian" 
+                        label={<><span>Italian</span> <span className="flag-icon">🇮🇹</span></>} 
+                        className="language-option"
+                        onChange={(e) => dispatch(setTranslationLanguage(e.target.value))} 
+                    />
+                    <Form.Check 
+                        type="radio" 
+                        id="romanian"
+                        name="language" 
+                        value="Romanian" 
+                        label={<><span>Romanian</span> <span className="flag-icon">🇷🇴</span></>} 
                         className="language-option"
                         onChange={(e) => dispatch(setTranslationLanguage(e.target.value))} 
                     />
