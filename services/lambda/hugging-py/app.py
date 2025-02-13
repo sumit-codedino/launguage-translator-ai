@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from transformers import MarianMTModel, MarianTokenizer
@@ -5,19 +6,19 @@ from transformers import MarianMTModel, MarianTokenizer
 app = Flask(__name__)
 CORS(app)
 
-# Language map for model-specific language codes
+# Load model from the local directory inside the container
+MODEL_DIR = os.getenv("MODEL_DIR", "/models")
+tokenizer = MarianTokenizer.from_pretrained(MODEL_DIR)
+model = MarianMTModel.from_pretrained(MODEL_DIR)
+
+# Define language codes
 LANGUAGE_CODE_MAP = {
     "French": "fr",
     "Spanish": "es",
-    "Portugese": "pt",
+    "Portuguese": "pt",
     "Italian": "it",
     "Romanian": "ro"
 }
-
-# Load translation models and tokenizers
-MODEL_NAME = "Helsinki-NLP/opus-mt-en-ROMANCE"
-tokenizer = MarianTokenizer.from_pretrained(MODEL_NAME)
-model = MarianMTModel.from_pretrained(MODEL_NAME)
 
 def translate_text(text, target_language):
     """Translate English text to the target language."""
@@ -45,4 +46,4 @@ def translate():
     return jsonify({"translated_text": translation})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True)
