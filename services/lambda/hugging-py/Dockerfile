@@ -1,34 +1,28 @@
-# Use a lightweight Python image
-FROM python:3.9-slim
+# Use AWS Lambda base image for Python 3.9
+FROM public.ecr.aws/lambda/python:3.9
 
-# Set the working directory
-WORKDIR /app
+# Set working directory (AWS Lambda uses /var/task)
+WORKDIR /var/task
 
-# Install system dependencies required for transformers
-RUN apt-get update && apt-get install -y \
-    git \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy only requirements first for caching
+# Copy dependency file
 COPY requirements.txt .
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies with caching optimization
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-cache-dir -r requirements.txt
 
-# Download and save the model inside the container
-RUN python -c "from transformers import MarianMTModel, MarianTokenizer; \
-    model_name='Helsinki-NLP/opus-mt-en-ROMANCE'; \
-    MarianMTModel.from_pretrained(model_name).save_pretrained('/models'); \
-    MarianTokenizer.from_pretrained(model_name).save_pretrained('/models')"
+# Copy application files
+COPY lambda_function.py .
 
-# Copy the rest of the application files
-COPY . .
+# Uncomment if you need to preload a model (otherwise, handle it in lambda_function.py)
+# ENV MODEL_DIR=/models
+# RUN --mount=type=cache,target=/root/.cache/huggingface \
+#     mkdir -p $MODEL_DIR && \
+#     python -c "from transformers import MarianMTModel, MarianTokenizer; \
+#                model_name = 'Helsinki-NLP/opus-mt-en-ROMANCE'; \
+#                MarianMTModel.from_pretrained(model_name).save_pretrained('$MODEL_DIR'); \
+#                MarianTokenizer.from_pretrained(model_name).save_pretrained('$MODEL_DIR')"
 
-# Expose port 8000
-EXPOSE 8000
-
-# Set environment variable for model path
-ENV MODEL_DIR=/models
-
-# Run the application on port 8000
-CMD ["python", "app.py"]
+# Set the entry point for AWS Lambda
+ENTRYPOINT ["python", "-m", "awslambdaric"]
+CMD ["lambda_function.lambda_handler"]

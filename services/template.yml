@@ -29,29 +29,6 @@ Parameters:
 
 Resources:
 
-  LanguageTranslatorFunction:
-      Type: AWS::Serverless::Function
-      Properties:
-        Handler: index.handler
-        Runtime: nodejs18.x
-        CodeUri: ./lambda/language-translator
-        Description: "Language translator function"
-        Timeout: 120
-        Role: !Sub arn:aws:iam::${AccountId}:role/lambda-admin-role
-        Events:
-          ApiEvent:
-            Type: Api
-            Properties:
-              Path: /language-translator
-              Method: post
-              RestApiId: !Ref LanguageTranslatorApi
-
-  LanguageTranslatorFunctionLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName: !Sub /aws/lambda/${LanguageTranslatorFunction}
-      RetentionInDays: 7
-
   LanguageTranslatorApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -67,8 +44,31 @@ Resources:
   LanguageTranslatorApiBasePathMapping:
     Type: AWS::ApiGatewayV2::ApiMapping
     Properties:
-      ApiMappingKey: test/ai
+      ApiMappingKey: ai
       DomainName: !Ref ApiDomainName
       ApiId: !Ref LanguageTranslatorApi
       Stage: !Ref LanguageTranslatorApi.Stage
+
+  LanguageTranslatorFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        PackageType: Image
+        Timeout: 120
+        FunctionName: codedino-lang-translator-function
+        MemorySize: 512
+        ImageUri: !Sub "${AccountId}.dkr.ecr.us-east-1.amazonaws.com/flask-translate:latest"
+        Role: !Sub arn:aws:iam::${AccountId}:role/lambda-admin-role
+        Events:
+          ApiEvent:
+            Type: Api
+            Properties:
+              Path: /translate
+              Method: post
+              RestApiId: !Ref LanguageTranslatorApi
+
+  LanguageTranslatorFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${LanguageTranslatorFunction}
+      RetentionInDays: 7
 

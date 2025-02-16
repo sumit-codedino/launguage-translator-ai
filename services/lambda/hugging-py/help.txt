@@ -1,0 +1,4 @@
+DOCKER_BUILDKIT=1 docker buildx build --platform linux/amd64 --provenance=false -t flask-translate .
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 975050376382.dkr.ecr.us-east-1.amazonaws.com
+docker tag flask-translate:latest 975050376382.dkr.ecr.us-east-1.amazonaws.com/flask-translate:latest
+docker push 975050376382.dkr.ecr.us-east-1.amazonaws.com/flask-translate:latest
