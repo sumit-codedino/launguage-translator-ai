@@ -56,7 +56,7 @@ Resources:
         Timeout: 120
         FunctionName: codedino-lang-translator-function
         MemorySize: 512
-        ImageUri: !Sub "${AccountId}.dkr.ecr.us-east-1.amazonaws.com/flask-translate:latest"
+        ImageUri: !Sub "${AccountId}.dkr.ecr.us-east-1.amazonaws.com/ai-translator:latest"
         Role: !Sub arn:aws:iam::${AccountId}:role/lambda-admin-role
         Events:
           ApiEvent:

@@ -56,7 +56,7 @@ Resources:
       FunctionName: codedino-lang-translator-function
       MemorySize: 512
       ImageUri:
-        Fn::Sub: ${AccountId}.dkr.ecr.us-east-1.amazonaws.com/flask-translate:latest
+        Fn::Sub: ${AccountId}.dkr.ecr.us-east-1.amazonaws.com/ai-translator:latest
       Role:
         Fn::Sub: arn:aws:iam::${AccountId}:role/lambda-admin-role
       Events:

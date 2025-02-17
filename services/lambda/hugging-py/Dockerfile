@@ -1,8 +1,5 @@
-# Use AWS Lambda base image for Python 3.9
-FROM public.ecr.aws/lambda/python:3.9
-
-# Set working directory (AWS Lambda uses /var/task)
-WORKDIR /var/task
+# Use AWS Lambda base image for Python 3.10 (recommended)
+FROM public.ecr.aws/lambda/python:3.10
 
 # Copy dependency file
 COPY requirements.txt .
@@ -11,18 +8,13 @@ COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --no-cache-dir -r requirements.txt
 
+# Set environment variable for the model directory
+ENV TRANSFORMERS_CACHE=/tmp/.cache
+ENV S3_BUCKET=codedino.io
+ENV MODEL_PATH=models/marianmt-model
+
 # Copy application files
-COPY lambda_function.py .
+COPY app.py ${LAMBDA_TASK_ROOT}
 
-# Uncomment if you need to preload a model (otherwise, handle it in lambda_function.py)
-# ENV MODEL_DIR=/models
-# RUN --mount=type=cache,target=/root/.cache/huggingface \
-#     mkdir -p $MODEL_DIR && \
-#     python -c "from transformers import MarianMTModel, MarianTokenizer; \
-#                model_name = 'Helsinki-NLP/opus-mt-en-ROMANCE'; \
-#                MarianMTModel.from_pretrained(model_name).save_pretrained('$MODEL_DIR'); \
-#                MarianTokenizer.from_pretrained(model_name).save_pretrained('$MODEL_DIR')"
-
-# Set the entry point for AWS Lambda
-ENTRYPOINT ["python", "-m", "awslambdaric"]
-CMD ["lambda_function.lambda_handler"]
+# Set the Lambda function handler
+CMD [ "app.handler" ]
