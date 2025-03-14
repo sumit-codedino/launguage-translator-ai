@@ -1,17 +1,21 @@
-# Use an official Python image as the base
+# Use an official Python image
 FROM python:3.11
 
-# Set the working directory
+# Set a writable working directory
 WORKDIR /app
 
-# Copy the project files into the container
-COPY . .
-
-# Install dependencies
+# Copy requirements and install dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the Flask port
+# Copy the rest of the application code
+COPY . .
+
+# Expose the required port
 EXPOSE 5000
+
+# Set environment variables for Railway
+ENV PORT 5000
 
 # Run the Flask app
 CMD ["python", "app.py"]

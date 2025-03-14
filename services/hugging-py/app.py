@@ -81,8 +81,18 @@ def translate():
     
 @app.route("/health")
 def health():
-    """Health check endpoint."""
-    return jsonify({"status": "ok"})
+    """List all files in the container."""
+    files = {}
+    base_dirs = ["/app", "/app/models", "/tmp"]  # Directories to check
+
+    for directory in base_dirs:
+        try:
+            files[directory] = os.listdir(directory)
+        except Exception as e:
+            files[directory] = f"Error accessing directory: {str(e)}"
+
+    return jsonify({"status": "ok", "files": files})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)

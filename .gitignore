@@ -132,3 +132,5 @@ dist
 marianmt-model
 
 .aws-sam
+
+venv
